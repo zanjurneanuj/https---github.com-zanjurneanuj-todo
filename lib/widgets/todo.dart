@@ -21,7 +21,7 @@ class _ToDoState extends State<ToDo> {
         padding: const EdgeInsets.all(8.0),
         child: Container(
           decoration: BoxDecoration(
-              color: widget.done == true ? Colors.green : Colors.red,
+              //  color: widget.done == true ? Colors.green : Colors.red,
               borderRadius: BorderRadius.circular(15.0)),
           child: Padding(
             padding: const EdgeInsets.all(8.0),

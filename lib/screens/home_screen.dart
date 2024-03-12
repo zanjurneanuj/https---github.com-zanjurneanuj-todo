@@ -11,6 +11,21 @@ class Home_screen extends StatefulWidget {
 
 class _Home_screenState extends State<Home_screen> {
   List<ToDoModel> todos = [];
+  bool doedit = false;
+  void submit(doedit, [ToDoModel? obj]) {
+    if (!doedit) {
+      todos.add(ToDoModel(title.text, desc.text, false));
+      title.clear();
+      desc.clear();
+      setState(() {});
+    } else {
+      obj!.title = title.text;
+      obj.desc = desc.text;
+      setState(() {});
+    }
+  }
+
+  int globalIndex = 0;
   TextEditingController title = TextEditingController();
   TextEditingController desc = TextEditingController();
   @override
@@ -50,7 +65,17 @@ class _Home_screenState extends State<Home_screen> {
                             todos.removeAt(index);
                             setState(() {});
                           },
-                          icon: Icon(Icons.delete))
+                          icon: Icon(Icons.delete)),
+                      IconButton(
+                          onPressed: () {
+                            globalIndex = index;
+                            title.text = todos[globalIndex].title;
+                            desc.text = todos[globalIndex].desc;
+                            title.text = todos[globalIndex].title;
+                            doedit = true;
+                            setState(() {});
+                          },
+                          icon: Icon(Icons.edit))
                     ],
                   ),
                 );
@@ -64,7 +89,7 @@ class _Home_screenState extends State<Home_screen> {
                 Container(
                   decoration: BoxDecoration(
                       border: Border.all(),
-                      borderRadius: BorderRadius.circular(10)),
+                      borderRadius: BorderRadius.circular(20)),
                   child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
@@ -95,16 +120,14 @@ class _Home_screenState extends State<Home_screen> {
                 ),
                 ElevatedButton(
                     onPressed: () {
-                      todos.add(ToDoModel(title.text, desc.text, false));
-                      setState(() {});
+                      ToDoModel todo = ToDoModel(title.text, desc.text, false);
+                      if (doedit == false) {
+                        submit(false, todo);
+                      } else {
+                        submit(true, todos[globalIndex]);
+                      }
                     },
-                    child: Text("Add to do")),
-                ElevatedButton(
-                    onPressed: () {
-                      todos.removeLast();
-                      setState(() {});
-                    },
-                    child: Text("Delete   "))
+                    child: const Text("Add to_do")),
               ],
             ),
           ),
